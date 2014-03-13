@@ -165,7 +165,4 @@
   <data name="pPN2Excel" xml:space="preserve">
     <value>Cisnienie parcjalne N2 [bar]</value>
   </data>
-  <data name="MValue" xml:space="preserve">
-    <value>M - wartość</value>
-  </data>
 </root>

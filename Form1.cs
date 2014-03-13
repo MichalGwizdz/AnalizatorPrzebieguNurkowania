@@ -287,19 +287,14 @@ namespace AnalizatorNurkowaniaWFA
             int i=0;
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea = chartCompartmentsDefinition.ChartAreas.First();
             chartArea.AxisY.Crossing = 0;
-            chartArea.AxisX.Title = AnalizatorNurkowaniaWFA.Properties.Resources.MValue;
-            chartArea.AxisY.Title = AnalizatorNurkowaniaWFA.Properties.Resources.depthWithUnit;
+            chartArea.AxisX.Crossing = 0;
             chartArea.AxisY.IsStartedFromZero = true;
+            chartArea.AxisX.IsStartedFromZero = true;
             chartArea.AxisY.IsReversed = true;
             System.Windows.Forms.DataVisualization.Charting.Series series;
             chartCompartmentsDefinition.Series.Clear();
             double maxD = diving.DepthMax();
             double minD = diving.DepthAtPresure(diving.AtmosphericPressure);
-            dataGridCompartmentsDefinition.Rows.Clear();
-            chartCompartmentsDefinition.Series.Clear();
-            chartCompartmentsDefinition.Titles.Clear();
-            double maxX = 0;
-            double minX = Double.MaxValue;
             foreach (Compartments.Compartment c in calculation.compartments.compartment )
             {
                 dataGridCompartmentsDefinition.Rows.Add();
@@ -308,23 +303,13 @@ namespace AnalizatorNurkowaniaWFA
                 dataGridCompartmentsDefinition.Rows[i].Cells["CompartmentdM"].Value = c.dMN2;
                 dataGridCompartmentsDefinition.Rows[i].Cells["CompartmentHT"].Value = c.HalfTimeN2;
                 dataGridCompartmentsDefinition.Rows[i].Cells["CompartmentRemark"].Value = "";
-                chartCompartmentsDefinition.Series.Add(c.Name);  
+                chartCompartmentsDefinition.Series.Add(c.Name);        
                 series = chartCompartmentsDefinition.Series.Last();
                 series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
                 series.Points.AddXY(c.dMN2 * maxD + c.M0N2, maxD);
                 series.Points.AddXY(c.dMN2 * minD + c.M0N2, minD);
-                maxX = Math.Max(maxX, c.dMN2 * maxD + c.M0N2);
-                minX = Math.Min(minX, c.dMN2 * minD + c.M0N2);
                 i++;
             }
-            chartArea.AxisX.IsLabelAutoFit = false;
-            chartCompartmentsDefinition.Titles.Add("1").Text = calculation.compartments.Description;
-            chartArea.AxisX.Maximum = (Math.Floor(maxX) + 1.0);
-            chartArea.AxisX.Minimum = (Math.Ceiling(minX) - 1.0);
-            chartArea.AxisX.Crossing = chartArea.AxisX.Minimum;
-            chartArea.AxisX.MajorGrid.Interval = Math.Ceiling((0.2 * (chartArea.AxisX.Maximum - chartArea.AxisX.Minimum)));
-            chartArea.AxisX.LabelStyle.Interval=chartArea.AxisX.MajorGrid.Interval;
-            chartArea.AxisX.Interval = chartArea.AxisX.MajorGrid.Interval;
         }
         private void modifChartCompartments()
         {
@@ -413,16 +398,6 @@ namespace AnalizatorNurkowaniaWFA
                 numericUpDownCzas.Enabled = true;
             }
             compartmentChart();
-            chartArea.AxisX.IsLabelAutoFit = false;
-            chartCompartments.Titles.Clear();
-            chartCompartments.Titles.Add("0").Text = calculation.compartments.Description;
-            chartArea.AxisX.Maximum = (Math.Floor(calculationResult.Last().Time) + 1.0);
-            chartArea.AxisX.Minimum = 0;
-            chartArea.AxisX.Crossing = 0;
-            chartArea.AxisX.MajorGrid.Interval = Math.Ceiling((0.1 * (chartArea.AxisX.Maximum - chartArea.AxisX.Minimum)));
-            chartArea.AxisX.LabelStyle.Interval = chartArea.AxisX.MajorGrid.Interval;
-            chartArea.AxisX.Interval = chartArea.AxisX.MajorGrid.Interval;
-            chartArea.AxisX.Title = AnalizatorNurkowaniaWFA.Properties.Resources.timeWithUnit;
         }
         private void ustawieniaNurkowaniaToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -433,8 +408,6 @@ namespace AnalizatorNurkowaniaWFA
               diving.DescentSpeed = userProp.DescentSpeed;
               diving.AtmosphericPressure =  userProp.AtmosphericPressure;
               diving.WaterSpecificWeight =  userProp.WaterSpecificWeight;
-              calculation = new Calculation(ref diving, userProp.compartmentType);
-              modifCompartmentsDefinition();
            }
         }
         private void parametryDomyślneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -446,8 +419,6 @@ namespace AnalizatorNurkowaniaWFA
               diving.DescentSpeed = userProp.DescentSpeed;
               diving.AtmosphericPressure = userProp.AtmosphericPressure;
               diving.WaterSpecificWeight = userProp.WaterSpecificWeight;
-              calculation = new Calculation(ref diving, userProp.compartmentType);
-              modifCompartmentsDefinition();
            }
         }
         // Excel XML z menu
