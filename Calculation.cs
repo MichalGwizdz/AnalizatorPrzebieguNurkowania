@@ -32,6 +32,7 @@ namespace AnalizatorNurkowaniaWFA
    /// </summary>
    class Calculation
    {
+      const bool multiThread = false;
       /// <summary>Indeks maksymany przy przeszukiwaniu rezultaów</summary>
       private int upperResultSerch;
       /// <summary>Indeks minimalny przy przeszukiwaniu rezultaów</summary>
@@ -113,54 +114,23 @@ namespace AnalizatorNurkowaniaWFA
                   ppc.PreasureHe = profile.getPartialPreasureHe(iT, i);
                 // Bieżąca głębokość
                 ppc.Depth = profile.getDepth(iT, i);
+                
                 // Obliczanie nasycenia tkanki gazami obojętnymi dla każdej z tkanek, oraz minimalnego ciśnienia akceptowalnego przez tkankę
-                
-                //Wersja wielowatkowa - uruchomić po testach jednowątkowej!
-                //Parallel.For(0, compNo, k =>
-                //{
-                //   double ceiling = 0;
-                //   if (result.Count() == 0)
-                //   {
-                //      ppc.setN2(k, PartialPreasure(ppc.PreasureN2, 0.79 * calcDiving.AtmosphericPressure, 0, compartments.compartment[k].HalfTimeN2));
-                //      if (bTmx)
-                //         ppc.setN2(k, PartialPreasure(ppc.PreasureHe, 0.0, 0, compartments.compartment[k].HalfTimeHe));
-                //   }
-                //   else
-                //   {
-                //      ppc.setN2(k, PartialPreasure(ppc.PreasureN2, result.Last().getN2(k), dT, compartments.compartment[k].HalfTimeN2));
-                //      if (bTmx)
-                //         ppc.setN2(k, PartialPreasure(ppc.PreasureHe, result.Last().getHe(k), dT, compartments.compartment[k].HalfTimeHe));
-                //   }
-                //   if (bTmx)
-                //      ceiling = ceiling = Ceiling(ppc.getN2(k), compartments.compartment[k].M0N2, compartments.compartment[k].dMN2, ppc.getHe(k), compartments.compartment[k].M0He, compartments.compartment[k].dMHe);
-                //   else
-                //      ceiling = Ceiling(ppc.getN2(k), compartments.compartment[k].M0N2, compartments.compartment[k].dMN2);
-                //   ppc.setCeiling(k,ceiling);
-                //});
-                
-                // Obliczenia jednowątkowe
-                for (int k = 0; k < compNo; k++)
+                if (multiThread) //Wersja wielowatkowa - uruchomić po testach jednowątkowej!
                 {
-                   double ceiling = 0;
-                   if (result.Count() == 0)
-                   {
-                      ppc.setN2(k, PartialPreasure(ppc.PreasureN2, 0.79 * calcDiving.AtmosphericPressure, 0, compartments.compartment[k].HalfTimeForN2(false)));
-                      if (bTmx)
-                         ppc.setN2(k, PartialPreasure(ppc.PreasureHe, 0.0, 0, compartments.compartment[k].HalfTimeForHe(false)));
-                   }
-                   else
-                   {
-                      ppc.setN2(k, PartialPreasure(ppc.PreasureN2, result.Last().getN2(k), dT, compartments.compartment[k].HalfTimeForN2(ppc.PreasureN2<result.Last().getN2(k))));
-                      if (bTmx)
-                         ppc.setN2(k, PartialPreasure(ppc.PreasureHe, result.Last().getHe(k), dT, compartments.compartment[k].HalfTimeForHe(ppc.PreasureHe < result.Last().getHe(k))));
-                   }
-                   if (bTmx)
-                      ceiling = ceiling = Ceiling(ppc.getN2(k), compartments.compartment[k].M0N2, compartments.compartment[k].dMN2, ppc.getHe(k), compartments.compartment[k].M0He, compartments.compartment[k].dMHe);
-                   else
-                      ceiling = Ceiling(ppc.getN2(k), compartments.compartment[k].M0N2, compartments.compartment[k].dMN2);
-                   ppc.setCeiling(k,ceiling);
+                   Parallel.For(0, compNo, k =>
+                     {
+                        CalculationForOneStepInOneCompartment(ref k, ref dT, ref ppc);
+                     }
+                   );// koniec petli wielowatkowej
                 }
-                // koniec petli jednowątkowej
+                else // Obliczenia jednowątkowe
+                {
+                   for (int k = 0; k < compNo; k++)
+                   {
+                      CalculationForOneStepInOneCompartment(ref k, ref dT, ref ppc);
+                   }
+                }// koniec petli jednowątkowej
                 result.Add(ppc);
                 iT += dT;
              }
@@ -270,6 +240,27 @@ namespace AnalizatorNurkowaniaWFA
          double a = ((M0First - dMFirst * apmsw)*pCompartmentFirst + (M0Second - dMSecond * apmsw)*pCompartmentSecond)/pCompartment;
          double b = (pCompartmentFirst / dMFirst) + (pCompartmentSecond/dMSecond) / pCompartment;
          return (pCompartment - 0.1 * a) * b;
+      }
+      private void CalculationForOneStepInOneCompartment(ref int compartmentNo, ref double timeStep, ref Result.PPraeasureForCompartment ppc )
+      {
+         double ceiling = 0;
+         if (result.Count() == 0)
+         {
+            ppc.setN2(compartmentNo, PartialPreasure(ppc.PreasureN2, 0.79 * calcDiving.AtmosphericPressure, 0, compartments.compartment[compartmentNo].HalfTimeForN2(false)));
+            if (bTmx)
+               ppc.setN2(compartmentNo, PartialPreasure(ppc.PreasureHe, 0.0, 0, compartments.compartment[compartmentNo].HalfTimeForHe(false)));
+         }
+         else
+         {
+            ppc.setN2(compartmentNo, PartialPreasure(ppc.PreasureN2, result.Last().getN2(compartmentNo), timeStep, compartments.compartment[compartmentNo].HalfTimeForN2(ppc.PreasureN2 < result.Last().getN2(compartmentNo))));
+            if (bTmx)
+               ppc.setN2(compartmentNo, PartialPreasure(ppc.PreasureHe, result.Last().getHe(compartmentNo), timeStep, compartments.compartment[compartmentNo].HalfTimeForHe(ppc.PreasureHe < result.Last().getHe(compartmentNo))));
+         }
+         if (bTmx)
+            ceiling = ceiling = Ceiling(ppc.getN2(compartmentNo), compartments.compartment[compartmentNo].M0N2, compartments.compartment[compartmentNo].dMN2, ppc.getHe(compartmentNo), compartments.compartment[compartmentNo].M0He, compartments.compartment[compartmentNo].dMHe);
+         else
+            ceiling = Ceiling(ppc.getN2(compartmentNo), compartments.compartment[compartmentNo].M0N2, compartments.compartment[compartmentNo].dMN2);
+         ppc.setCeiling(compartmentNo, ceiling);
       }
    }
 

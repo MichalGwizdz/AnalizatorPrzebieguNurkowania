@@ -117,58 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="compartmentName" xml:space="preserve">
-    <value>Nasycenia tkanek</value>
-  </data>
-  <data name="finialDepthExcel" xml:space="preserve">
-    <value>Głebokość końcowa [m]</value>
-  </data>
-  <data name="gasesMixName" xml:space="preserve">
-    <value>Zestawienie gazów</value>
-  </data>
-  <data name="gasNameExcel" xml:space="preserve">
-    <value>Nazwa mieszanki</value>
-  </data>
-  <data name="HeNameExcel" xml:space="preserve">
-    <value>Zawartość He</value>
-  </data>
-  <data name="initialDepthExcel" xml:space="preserve">
-    <value>Głebokość poczatkowa [m]</value>
-  </data>
-  <data name="N2NameExcel" xml:space="preserve">
-    <value>Zawartość N2</value>
-  </data>
-  <data name="O2NameExcel" xml:space="preserve">
-    <value>Zawartość O2</value>
-  </data>
-  <data name="profileName" xml:space="preserve">
-    <value>Profil nurkowania</value>
-  </data>
-  <data name="timeWithUnit" xml:space="preserve">
-    <value>Czas [min]</value>
-  </data>
-  <data name="Air" xml:space="preserve">
-    <value>Powietrze</value>
-  </data>
-  <data name="EAN" xml:space="preserve">
-    <value>EAN</value>
-  </data>
-  <data name="TMX" xml:space="preserve">
-    <value>TMX</value>
-  </data>
-  <data name="ambientPreasureExcel" xml:space="preserve">
-    <value>Cisnienie zewnetrzne [bar]</value>
-  </data>
-  <data name="depthWithUnit" xml:space="preserve">
-    <value>Głębokość [m]</value>
-  </data>
-  <data name="pPN2Excel" xml:space="preserve">
-    <value>Cisnienie parcjalne N2 [bar]</value>
-  </data>
-  <data name="MValue" xml:space="preserve">
-    <value>M - wartość</value>
-  </data>
-  <data name="preasureBar" xml:space="preserve">
-    <value>Cisnienie [bar]</value>
-  </data>
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="saveFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>126, 17</value>
+  </metadata>
+  <metadata name="openFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>219, 17</value>
+  </metadata>
+  <metadata name="CompartmentName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="CompartmentHT.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="CompartmentM0.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="CompartmentdM.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="CompartmentRemark.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="initialD.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="finialD.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="time.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="runTime.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="gasName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="remarks.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>25</value>
+  </metadata>
 </root>
